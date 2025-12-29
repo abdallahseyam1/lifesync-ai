@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LifeSync AI - Your Second Brain That Actually Understands You">
+    <title>LifeSync AI - Your Second Brain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div class="vignette"></div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-icon">L</div><span>LifeSync</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+                <a href="#" class="nav-enterprise">Enterprise</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge animate-fade-in"><span class="badge-dot"></span><span>Launching January 2025</span>
+            </div>
+            <h1 class="animate-slide-up">Your Second Brain<br><span class="gradient-text typewriter"
+                    id="typewriter"></span></h1>
+            <p class="hero-subtitle animate-slide-up delay-1">An AI companion that learns your patterns, values, and
+                goals—helping you make
+                better decisions and grow into who you want to become.</p>
+
+            <div class="signup-card">
+                <div class="signup-header">
+                    <div class="signup-icon">🧠</div>
+                    <span>Get Early Access</span>
+                </div>
+                <div class="social-buttons">
+                    <button class="btn-social btn-google">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
+                            width="20">
+                        Continue with Google
+                    </button>
+                    <button class="btn-social btn-apple">🍎 Continue with Apple</button>
+                </div>
+                <div class="divider"><span>or</span></div>
+                <form class="email-form">
+                    <input type="email" placeholder="Enter your email" class="email-input">
+                    <button type="submit" class="btn-primary">Get Started →</button>
+                </form>
+                <p class="terms">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy
+                        Policy</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="50000">0</div>
+                    <div class="stat-label">Active Thinkers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="2500000">0</div>
+                    <div class="stat-label">Insights Generated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-suffix">%</div>
+                    <div class="stat-label">User Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="150">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Everything you need to<br><span class="gradient-text">unlock your potential</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Pattern Recognition</h3>
+                    <p>AI that learns your rhythms, habits, and productivity patterns to optimize your life
+                        automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Conversational Memory</h3>
+                    <p>Talk to your AI like a trusted friend. It remembers your conversations, decisions, and evolving
+                        thoughts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Growth Insights</h3>
+                    <p>Weekly reports on your personal development, belief evolution, and progress toward your goals.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Decision Replay</h3>
+                    <p>Revisit past decisions, understand your reasoning, and learn from what worked and what didn't.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Therapist Integration</h3>
+                    <p>Export insights to share with your therapist or coach for deeper collaborative growth.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Private & Secure</h3>
+                    <p>Your thoughts are encrypted end-to-end. We can't read your data—even if we wanted to.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2>How LifeSync <span class="gradient-text">works</span></h2>
+            <p class="section-subtitle">Three simple steps to unlock your potential</p>
+
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">💭</div>
+                    <h3>Share Your Thoughts</h3>
+                    <p>Talk to LifeSync like a journal. Share decisions, feelings, ideas, and goals through natural
+                        conversation.</p>
+                    <div class="step-visual">
+                        <div class="step-demo">
+                            <div class="demo-input">"I'm feeling anxious about my presentation tomorrow..."</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-arrow">→</div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">🧠</div>
+                    <h3>AI Learns & Connects</h3>
+                    <p>Our AI identifies patterns in your thinking, connects related ideas, and builds a map of who you
+                        are.</p>
+                    <div class="step-visual">
+                        <div class="step-demo">
+                            <div class="demo-pattern">
+                                <span class="pattern-node">Presentations</span>
+                                <span class="pattern-node">Anxiety</span>
+                                <span class="pattern-node">Mornings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-arrow">→</div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">✨</div>
+                    <h3>Receive Insights</h3>
+                    <p>Get actionable insights, gentle nudges, and predictions that help you become your best self.</p>
+                    <div class="step-visual">
+                        <div class="step-demo">
+                            <div class="demo-insight">💡 "You perform 34% better after morning exercise. Try a 10-min
+                                walk?"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Mockup -->
+    <section class="product-showcase">
+        <div class="container">
+            <h2>See LifeSync <span class="gradient-text">in action</span></h2>
+            <p class="showcase-subtitle">Experience how AI understands and grows with you</p>
+
+            <div class="mockup-container">
+                <div class="mockup-window">
+                    <div class="mockup-header">
+                        <div class="mockup-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="mockup-title">LifeSync Dashboard</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="mockup-sidebar">
+                            <div class="sidebar-nav-item active"><span>🏠</span> Today</div>
+                            <div class="sidebar-nav-item"><span>💡</span> Insights</div>
+                            <div class="sidebar-nav-item"><span>📊</span> Growth</div>
+                            <div class="sidebar-nav-item"><span>🔄</span> Decisions</div>
+                            <div class="sidebar-nav-item"><span>⚙️</span> Settings</div>
+                        </div>
+                        <div class="mockup-main">
+                            <div class="ai-chat-bubble">
+                                <div class="ai-avatar">L</div>
+                                <div class="ai-message-content">
+                                    <p>Good morning! ☀️ I noticed you've been most productive between 9-11am this week.
+                                        Your focus score is up 12% from last week!</p>
+                                    <p class="ai-suggestion">Would you like me to block your calendar for deep work
+                                        during these hours?</p>
+                                </div>
+                            </div>
+                            <div class="insight-row">
+                                <div class="mini-insight">
+                                    <span class="insight-emoji">😊</span>
+                                    <div>
+                                        <strong>Mood Trend</strong>
+                                        <span class="trend-up">↑ +12%</span>
+                                    </div>
+                                </div>
+                                <div class="mini-insight">
+                                    <span class="insight-emoji">🎯</span>
+                                    <div>
+                                        <strong>Focus Score</strong>
+                                        <span class="trend-value">87/100</span>
+                                    </div>
+                                </div>
+                                <div class="mini-insight">
+                                    <span class="insight-emoji">🧠</span>
+                                    <div>
+                                        <strong>Patterns Found</strong>
+                                        <span class="trend-value">23</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-mockup">
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen">
+                            <div class="mobile-header">LifeSync</div>
+                            <div class="mobile-chat">
+                                <div class="mobile-ai-msg">How are you feeling today?</div>
+                                <div class="mobile-user-msg">Excited about my new project!</div>
+                                <div class="mobile-ai-msg">That's great! 🎉 This connects to your goal of "launching a
+                                    side business." Want me to track this energy pattern?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Loved by <span class="gradient-text">thinkers worldwide</span></h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"LifeSync helped me understand patterns in my thinking I never noticed
+                        before. It's like having a therapist, coach, and journal all in one."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div>
+                            <strong>Sarah Chen</strong>
+                            <span>Product Designer @ Stripe</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card featured-testimonial">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The decision replay feature changed how I approach big choices. I can
+                        now see my reasoning evolve over time and learn from my past self."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div>
+                            <strong>Marcus Johnson</strong>
+                            <span>Founder @ TechFlow</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"As a therapist, I love that my clients can export their LifeSync
+                        insights. It makes our sessions so much more productive."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">D</div>
+                        <div>
+                            <strong>Dr. Emily Park</strong>
+                            <span>Clinical Psychologist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2>Transparent pricing for<br><span class="gradient-text">every thinker</span></h2>
+            <div class="pricing-toggle">
+                <button class="toggle-btn active" data-plan="individual">Individual</button>
+                <button class="toggle-btn" data-plan="teams">Teams</button>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <p class="pricing-desc">For curious minds</p>
+                    <div class="pricing-price"><span class="currency">$</span><span class="amount">0</span><span
+                            class="period">/month</span></div>
+                    <ul>
+                        <li>✓ 50 AI conversations/month</li>
+                        <li>✓ Basic pattern recognition</li>
+                        <li>✓ Weekly insights</li>
+                        <li>✓ Mobile app access</li>
+                    </ul>
+                    <button class="btn-secondary">Get Started Free</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <h3>Pro</h3>
+                    <p class="pricing-desc">For serious growth</p>
+                    <div class="pricing-price"><span class="currency">$</span><span class="amount">19</span><span
+                            class="period">/month</span></div>
+                    <ul>
+                        <li>✓ Unlimited AI conversations</li>
+                        <li>✓ Advanced pattern AI</li>
+                        <li>✓ Daily insights & predictions</li>
+                        <li>✓ Decision replay</li>
+                        <li>✓ Therapist exports</li>
+                    </ul>
+                    <button class="btn-primary full-width">Start 14-Day Trial</button>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <p class="pricing-desc">For organizations</p>
+                    <div class="pricing-price"><span class="amount">Custom</span></div>
+                    <ul>
+                        <li>✓ Everything in Pro</li>
+                        <li>✓ Team collaboration</li>
+                        <li>✓ SSO & advanced security</li>
+                        <li>✓ Custom integrations</li>
+                    </ul>
+                    <button class="btn-secondary">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2>Frequently Asked <span class="gradient-text">Questions</span></h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>How is this different from a notes app?</h3>
+                    <p>Unlike static notes, LifeSync actively learns from your inputs and proactively offers insights.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is my data really private?</h3>
+                    <p>Absolutely. Your data is encrypted end-to-end using military-grade encryption.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I export my data?</h3>
+                    <p>Yes! Export everything at any time in JSON, PDF, or therapist-friendly formats.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a mobile app?</h3>
+                    <p>Yes! Available on iOS, Android, and web with seamless sync.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to meet your <span class="gradient-text">second brain?</span></h2>
+            <p>Join thousands unlocking their potential with LifeSync AI.</p>
+            <button class="btn-primary btn-large">Start Free Today →</button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">L</div><span>LifeSync</span>
+                    </div>
+                    <p>Your AI companion for personal growth.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4><a href="#">Features</a><a href="#">Pricing</a><a href="#">Changelog</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 LifeSync AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
