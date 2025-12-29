@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeSync AI - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+    <!-- App Shell -->
+    <div class="app-container" id="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">L</div>
+                    <span>LifeSync</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="today">
+                    <span class="nav-icon">🏠</span>
+                    <span>Today</span>
+                </a>
+                <a href="#" class="nav-item" data-page="chat">
+                    <span class="nav-icon">💬</span>
+                    <span>Chat</span>
+                </a>
+                <a href="#" class="nav-item" data-page="insights">
+                    <span class="nav-icon">💡</span>
+                    <span>Insights</span>
+                </a>
+                <a href="#" class="nav-item" data-page="memories">
+                    <span class="nav-icon">🧠</span>
+                    <span>Memories</span>
+                </a>
+                <a href="#" class="nav-item" data-page="decisions">
+                    <span class="nav-icon">🔄</span>
+                    <span>Decisions</span>
+                </a>
+                <a href="#" class="nav-item" data-page="growth">
+                    <span class="nav-icon">📊</span>
+                    <span>Growth</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle-app" id="appThemeToggle">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <a href="#" class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Today Page -->
+            <div class="page active" id="page-today">
+                <header class="page-header">
+                    <div>
+                        <h1>Good morning! ☀️</h1>
+                        <p class="greeting-subtitle" id="greetingSubtitle">Let's make today count.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-icon" id="quickCapture">
+                            <span>✏️</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Mood Check-in Card -->
+                    <div class="card mood-card">
+                        <h3>How are you feeling?</h3>
+                        <div class="mood-selector">
+                            <button class="mood-btn" data-mood="great">😊</button>
+                            <button class="mood-btn" data-mood="good">🙂</button>
+                            <button class="mood-btn" data-mood="okay">😐</button>
+                            <button class="mood-btn" data-mood="low">😔</button>
+                            <button class="mood-btn" data-mood="stressed">😰</button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="card stats-card">
+                        <h3>Your Week</h3>
+                        <div class="mini-stats">
+                            <div class="mini-stat">
+                                <span class="stat-value" id="moodScore">--</span>
+                                <span class="stat-label">Mood Avg</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="stat-value" id="entriesCount">0</span>
+                                <span class="stat-label">Entries</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="stat-value" id="patternsCount">0</span>
+                                <span class="stat-label">Patterns</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Insight -->
+                    <div class="card insight-card">
+                        <div class="ai-badge">✨ AI Insight</div>
+                        <p id="dailyInsight">Start journaling to receive personalized insights about your patterns and
+                            growth.</p>
+                    </div>
+
+                    <!-- Recent Entries -->
+                    <div class="card entries-card">
+                        <h3>Recent Thoughts</h3>
+                        <div class="entries-list" id="recentEntries">
+                            <div class="empty-state">
+                                <span>📝</span>
+                                <p>No entries yet. Start a conversation with LifeSync!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Page -->
+            <div class="page" id="page-chat">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">L</div>
+                            <div class="message-content">
+                                <p>Hi there! 👋 I'm LifeSync, your AI companion for personal growth. What's on your mind
+                                    today?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <textarea id="chatInput" placeholder="Share your thoughts, feelings, or ask me anything..."
+                                rows="1"></textarea>
+                            <button class="send-btn" id="sendBtn">
+                                <span>↑</span>
+                            </button>
+                        </div>
+                        <div class="chat-hints">
+                            <span class="hint">💡 Try: "I'm feeling anxious about tomorrow"</span>
+                            <span class="hint">🎯 Or: "Help me make a decision"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Page -->
+            <div class="page" id="page-insights">
+                <header class="page-header">
+                    <h1>Insights</h1>
+                    <p>Patterns and learnings from your journey</p>
+                </header>
+
+                <div class="insights-grid">
+                    <div class="card">
+                        <h3>🎯 Recent Patterns</h3>
+                        <div id="patternsList" class="patterns-list">
+                            <div class="empty-state">
+                                <p>Keep journaling to discover patterns in your thoughts and behaviors.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📈 Mood Trends</h3>
+                        <div id="moodChart" class="chart-container">
+                            <div class="empty-state">
+                                <p>Track your mood daily to see trends over time.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🌱 Growth Areas</h3>
+                        <div id="growthAreas" class="growth-list">
+                            <div class="empty-state">
+                                <p>AI will identify areas where you're growing as you journal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memories Page -->
+            <div class="page" id="page-memories">
+                <header class="page-header">
+                    <h1>Memories</h1>
+                    <p>Your thoughts, organized and searchable</p>
+                </header>
+
+                <div class="search-container">
+                    <input type="text" id="memorySearch" placeholder="Search your memories..." class="search-input">
+                </div>
+
+                <div id="memoriesList" class="memories-grid">
+                    <div class="empty-state large">
+                        <span>🧠</span>
+                        <h3>Your memories will appear here</h3>
+                        <p>Every conversation and journal entry is saved and organized by AI.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decisions Page -->
+            <div class="page" id="page-decisions">
+                <header class="page-header">
+                    <h1>Decision Replay</h1>
+                    <p>Learn from your past decisions</p>
+                </header>
+
+                <div id="decisionsList" class="decisions-grid">
+                    <div class="empty-state large">
+                        <span>🔄</span>
+                        <h3>No decisions recorded yet</h3>
+                        <p>When you share decisions with LifeSync, we'll track outcomes and help you learn.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Growth Page -->
+            <div class="page" id="page-growth">
+                <header class="page-header">
+                    <h1>Growth Dashboard</h1>
+                    <p>Your personal development journey</p>
+                </header>
+
+                <div class="growth-dashboard">
+                    <div class="card growth-score-card">
+                        <h3>Growth Score</h3>
+                        <div class="score-circle">
+                            <span id="growthScore">--</span>
+                        </div>
+                        <p>Based on consistency, insights applied, and progress</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Weekly Report</h3>
+                        <div id="weeklyReport" class="report-content">
+                            <div class="empty-state">
+                                <p>Your personalized weekly report will appear after a week of journaling.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="page-settings">
+                <header class="page-header">
+                    <h1>Settings</h1>
+                </header>
+
+                <div class="settings-grid">
+                    <div class="card">
+                        <h3>Profile</h3>
+                        <div class="setting-item">
+                            <label>Display Name</label>
+                            <input type="text" id="displayName" placeholder="Your name" class="setting-input">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Preferences</h3>
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="themeSelect" class="setting-select">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Data</h3>
+                        <button class="btn-secondary" id="exportData">📥 Export All Data</button>
+                        <button class="btn-danger" id="clearData">🗑️ Clear All Data</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quick Capture Modal -->
+    <div class="modal" id="quickCaptureModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Quick Capture</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <textarea id="quickCaptureInput" placeholder="What's on your mind?"></textarea>
+            <div class="modal-actions">
+                <button class="btn-primary" id="saveCapture">Save Thought</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
