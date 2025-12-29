@@ -267,50 +267,43 @@
 
                 <div class="settings-grid">
                     <div class="card">
-                        <h3>Profile</h3>
+                        <h3>👤 Profile</h3>
                         <div class="setting-item">
-                            <label>Display Name</label>
-                            <input type="text" id="displayName" placeholder="Your name" class="setting-input">
+                            <label>Your Name</label>
+                            <input type="text" id="displayName" placeholder="What should I call you?"
+                                class="setting-input">
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h3>🤖 AI Settings</h3>
-                        <div class="setting-item">
-                            <label>OpenRouter API Key</label>
-                            <input type="password" id="openRouterApiKey" placeholder="sk-or-..." class="setting-input">
-                            <p class="setting-hint">Get your free API key at <a href="https://openrouter.ai/keys"
-                                    target="_blank">openrouter.ai/keys</a></p>
+                    <div class="card ai-status-card">
+                        <h3>🤖 AI Status</h3>
+                        <div class="ai-status">
+                            <span class="status-dot active"></span>
+                            <span>AI is active and ready</span>
                         </div>
-                        <div class="setting-item">
-                            <label>AI Model</label>
-                            <select id="aiModelSelect" class="setting-select">
-                                <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
-                                <option value="meta-llama/llama-3.2-3b-instruct:free">Llama 3.2 3B (Free)</option>
-                                <option value="google/gemini-pro">Gemini Pro</option>
-                                <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
-                                <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
-                            </select>
-                        </div>
-                        <button class="btn-primary" id="testAiConnection">🧪 Test Connection</button>
+                        <p class="ai-info">LifeSync uses advanced AI (Gemini 2.0) to understand you and provide
+                            personalized insights. No setup required!</p>
                     </div>
 
                     <div class="card">
-                        <h3>Preferences</h3>
+                        <h3>🎨 Appearance</h3>
                         <div class="setting-item">
                             <label>Theme</label>
                             <select id="themeSelect" class="setting-select">
-                                <option value="light">Light</option>
-                                <option value="dark">Dark</option>
-                                <option value="system">System</option>
+                                <option value="light">☀️ Light</option>
+                                <option value="dark">🌙 Dark</option>
+                                <option value="system">🖥️ System</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="card">
-                        <h3>Data</h3>
-                        <button class="btn-secondary" id="exportData">📥 Export All Data</button>
-                        <button class="btn-danger" id="clearData">🗑️ Clear All Data</button>
+                        <h3>📦 Your Data</h3>
+                        <p class="setting-hint">All data is stored locally on your device.</p>
+                        <div class="data-buttons">
+                            <button class="btn-secondary" id="exportData">📥 Export Data</button>
+                            <button class="btn-danger" id="clearData">🗑️ Clear Data</button>
+                        </div>
                     </div>
                 </div>
             </div>

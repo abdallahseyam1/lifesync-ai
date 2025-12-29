@@ -1,10 +1,10 @@
-// LifeSync AI - App JavaScript with OpenRouter Integration
+// LifeSync AI - App JavaScript with Built-in AI
 
-// AI Configuration
+// AI Configuration (Built-in - no setup required!)
 const AI_CONFIG = {
-    openRouterBaseUrl: 'https://openrouter.ai/api/v1/chat/completions',
-    defaultModel: 'google/gemini-2.0-flash-exp:free',
-    fallbackModel: 'meta-llama/llama-3.2-3b-instruct:free',
+    apiKey: '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',
+    baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
+    model: 'google/gemini-2.0-flash-exp:free',
     systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
 
 1. Listen deeply and validate feelings without judgment
@@ -33,9 +33,7 @@ const AppState = {
         patterns: [],
         decisions: [],
         settings: {
-            theme: 'light',
-            openRouterApiKey: '',
-            selectedModel: AI_CONFIG.defaultModel
+            theme: 'light'
         }
     },
     currentPage: 'today',
@@ -273,23 +271,9 @@ function removeTypingIndicator() {
 }
 
 async function generateAIResponse(userMessage) {
-    const apiKey = AppState.user.settings.openRouterApiKey;
-
     // Show typing indicator
     showTypingIndicator();
     AppState.isAiTyping = true;
-
-    // If no API key, use fallback responses
-    if (!apiKey) {
-        setTimeout(() => {
-            removeTypingIndicator();
-            const response = getFallbackResponse(userMessage);
-            addMessage(response, 'ai');
-            AppState.conversationHistory.push({ role: 'assistant', content: response });
-            AppState.isAiTyping = false;
-        }, 1000 + Math.random() * 1000);
-        return;
-    }
 
     try {
         // Build context with user data
@@ -303,16 +287,16 @@ async function generateAIResponse(userMessage) {
             ...AppState.conversationHistory.slice(-10) // Keep last 10 messages for context
         ];
 
-        const response = await fetch(AI_CONFIG.openRouterBaseUrl, {
+        const response = await fetch(AI_CONFIG.baseUrl, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
+                'Authorization': `Bearer ${AI_CONFIG.apiKey}`,
                 'Content-Type': 'application/json',
                 'HTTP-Referer': window.location.origin,
                 'X-Title': 'LifeSync AI'
             },
             body: JSON.stringify({
-                model: AppState.user.settings.selectedModel || AI_CONFIG.defaultModel,
+                model: AI_CONFIG.model,
                 messages: messages,
                 max_tokens: 500,
                 temperature: 0.8
@@ -335,15 +319,7 @@ async function generateAIResponse(userMessage) {
         console.error('AI Error:', error);
         removeTypingIndicator();
 
-        // Try fallback model
-        if (AppState.user.settings.selectedModel !== AI_CONFIG.fallbackModel) {
-            showNotification('Trying backup AI model...', 'info');
-            AppState.user.settings.selectedModel = AI_CONFIG.fallbackModel;
-            generateAIResponse(userMessage);
-            return;
-        }
-
-        // Use local fallback
+        // Use local fallback if API fails
         const response = getFallbackResponse(userMessage);
         addMessage(response, 'ai');
         AppState.conversationHistory.push({ role: 'assistant', content: response });
@@ -474,85 +450,19 @@ function initSettings() {
     const displayName = document.getElementById('displayName');
     const exportBtn = document.getElementById('exportData');
     const clearBtn = document.getElementById('clearData');
-    const apiKeyInput = document.getElementById('openRouterApiKey');
-    const modelSelect = document.getElementById('aiModelSelect');
-    const testBtn = document.getElementById('testAiConnection');
 
+    // Profile name
     if (displayName) {
         displayName.value = AppState.user.name || '';
         displayName.addEventListener('change', () => {
             AppState.user.name = displayName.value;
             saveState();
             updateGreeting();
+            showNotification('Name saved! 👋', 'success');
         });
     }
 
-    // API Key handling
-    if (apiKeyInput) {
-        apiKeyInput.value = AppState.user.settings.openRouterApiKey || '';
-        apiKeyInput.addEventListener('change', () => {
-            AppState.user.settings.openRouterApiKey = apiKeyInput.value.trim();
-            saveState();
-            showNotification('API key saved! 🔑', 'success');
-        });
-    }
-
-    // Model selection
-    if (modelSelect) {
-        modelSelect.value = AppState.user.settings.selectedModel || AI_CONFIG.defaultModel;
-        modelSelect.addEventListener('change', () => {
-            AppState.user.settings.selectedModel = modelSelect.value;
-            saveState();
-            showNotification('AI model updated! 🤖', 'success');
-        });
-    }
-
-    // Test AI connection
-    if (testBtn) {
-        testBtn.addEventListener('click', async () => {
-            const apiKey = AppState.user.settings.openRouterApiKey;
-            if (!apiKey) {
-                showNotification('Please enter an API key first', 'error');
-                return;
-            }
-
-            testBtn.disabled = true;
-            testBtn.textContent = '🔄 Testing...';
-
-            try {
-                const response = await fetch(AI_CONFIG.openRouterBaseUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'HTTP-Referer': window.location.origin,
-                        'X-Title': 'LifeSync AI'
-                    },
-                    body: JSON.stringify({
-                        model: AppState.user.settings.selectedModel || AI_CONFIG.defaultModel,
-                        messages: [
-                            { role: 'user', content: 'Say "Connection successful!" in 5 words or less.' }
-                        ],
-                        max_tokens: 20
-                    })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    showNotification('✅ AI connected successfully!', 'success');
-                } else {
-                    const error = await response.json();
-                    showNotification(`❌ Error: ${error.error?.message || 'Connection failed'}`, 'error');
-                }
-            } catch (error) {
-                showNotification('❌ Network error: Check your connection', 'error');
-            }
-
-            testBtn.disabled = false;
-            testBtn.textContent = '🧪 Test Connection';
-        });
-    }
-
+    // Export data
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
             const data = JSON.stringify(AppState.user, null, 2);
@@ -566,6 +476,7 @@ function initSettings() {
         });
     }
 
+    // Clear data
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
             if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
