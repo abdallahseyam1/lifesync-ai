@@ -1,4 +1,28 @@
-// LifeSync AI - App JavaScript
+// LifeSync AI - App JavaScript with OpenRouter Integration
+
+// AI Configuration
+const AI_CONFIG = {
+    openRouterBaseUrl: 'https://openrouter.ai/api/v1/chat/completions',
+    defaultModel: 'google/gemini-2.0-flash-exp:free',
+    fallbackModel: 'meta-llama/llama-3.2-3b-instruct:free',
+    systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
+
+1. Listen deeply and validate feelings without judgment
+2. Help users understand patterns in their thoughts and behaviors  
+3. Gently guide self-reflection without being preachy
+4. Remember context from the conversation to provide personalized insights
+5. Offer practical, actionable insights when appropriate
+6. Use emojis sparingly but warmly (💙 ✨ 🌱 🎯)
+
+Response Guidelines:
+- Keep responses concise (2-4 sentences typically) but meaningful
+- Ask thoughtful follow-up questions to encourage deeper reflection
+- Reference past moods/entries when relevant to show you remember
+- Never diagnose or provide medical advice - encourage professional help when needed
+- Be encouraging but authentic - avoid toxic positivity
+
+You are speaking with a user who wants to grow and understand themselves better. Be their thoughtful, caring companion on this journey.`
+};
 
 // App State
 const AppState = {
@@ -9,10 +33,14 @@ const AppState = {
         patterns: [],
         decisions: [],
         settings: {
-            theme: 'light'
+            theme: 'light',
+            openRouterApiKey: '',
+            selectedModel: AI_CONFIG.defaultModel
         }
     },
-    currentPage: 'today'
+    currentPage: 'today',
+    conversationHistory: [],
+    isAiTyping: false
 };
 
 // Initialize App
@@ -201,20 +229,24 @@ function sendMessage() {
     AppState.user.entries.push(entry);
     saveState();
 
+    // Add to conversation history
+    AppState.conversationHistory.push({
+        role: 'user',
+        content: message
+    });
+
     // Generate AI response
-    setTimeout(() => {
-        const response = generateAIResponse(message);
-        addMessage(response, 'ai');
-    }, 1000 + Math.random() * 1000);
+    generateAIResponse(message);
 
     updateDashboard();
 }
 
-function addMessage(content, type) {
+function addMessage(content, type, isTyping = false) {
     const chatMessages = document.getElementById('chatMessages');
 
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}-message`;
+    if (isTyping) messageDiv.id = 'typingIndicator';
 
     messageDiv.innerHTML = `
         <div class="message-avatar">${type === 'ai' ? 'L' : '👤'}</div>
@@ -225,9 +257,129 @@ function addMessage(content, type) {
 
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    return messageDiv;
 }
 
-function generateAIResponse(userMessage) {
+function showTypingIndicator() {
+    const existing = document.getElementById('typingIndicator');
+    if (existing) existing.remove();
+    addMessage('<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>', 'ai', true);
+}
+
+function removeTypingIndicator() {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+}
+
+async function generateAIResponse(userMessage) {
+    const apiKey = AppState.user.settings.openRouterApiKey;
+
+    // Show typing indicator
+    showTypingIndicator();
+    AppState.isAiTyping = true;
+
+    // If no API key, use fallback responses
+    if (!apiKey) {
+        setTimeout(() => {
+            removeTypingIndicator();
+            const response = getFallbackResponse(userMessage);
+            addMessage(response, 'ai');
+            AppState.conversationHistory.push({ role: 'assistant', content: response });
+            AppState.isAiTyping = false;
+        }, 1000 + Math.random() * 1000);
+        return;
+    }
+
+    try {
+        // Build context with user data
+        const userContext = buildUserContext();
+
+        const messages = [
+            {
+                role: 'system',
+                content: AI_CONFIG.systemPrompt + '\n\n' + userContext
+            },
+            ...AppState.conversationHistory.slice(-10) // Keep last 10 messages for context
+        ];
+
+        const response = await fetch(AI_CONFIG.openRouterBaseUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': window.location.origin,
+                'X-Title': 'LifeSync AI'
+            },
+            body: JSON.stringify({
+                model: AppState.user.settings.selectedModel || AI_CONFIG.defaultModel,
+                messages: messages,
+                max_tokens: 500,
+                temperature: 0.8
+            })
+        });
+
+        removeTypingIndicator();
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiMessage = data.choices[0]?.message?.content || getFallbackResponse(userMessage);
+
+        addMessage(aiMessage, 'ai');
+        AppState.conversationHistory.push({ role: 'assistant', content: aiMessage });
+
+    } catch (error) {
+        console.error('AI Error:', error);
+        removeTypingIndicator();
+
+        // Try fallback model
+        if (AppState.user.settings.selectedModel !== AI_CONFIG.fallbackModel) {
+            showNotification('Trying backup AI model...', 'info');
+            AppState.user.settings.selectedModel = AI_CONFIG.fallbackModel;
+            generateAIResponse(userMessage);
+            return;
+        }
+
+        // Use local fallback
+        const response = getFallbackResponse(userMessage);
+        addMessage(response, 'ai');
+        AppState.conversationHistory.push({ role: 'assistant', content: response });
+    }
+
+    AppState.isAiTyping = false;
+}
+
+function buildUserContext() {
+    const recentMoods = AppState.user.moods.slice(-7);
+    const recentEntries = AppState.user.entries.slice(-5);
+
+    let context = 'USER CONTEXT:\n';
+
+    if (AppState.user.name) {
+        context += `- User's name: ${AppState.user.name}\n`;
+    }
+
+    if (recentMoods.length > 0) {
+        const moodSummary = recentMoods.map(m => m.value).join(', ');
+        context += `- Recent moods (last ${recentMoods.length} entries): ${moodSummary}\n`;
+
+        const moodValues = { great: 5, good: 4, okay: 3, low: 2, stressed: 1 };
+        const avg = recentMoods.reduce((s, m) => s + (moodValues[m.value] || 3), 0) / recentMoods.length;
+        context += `- Average mood score: ${avg.toFixed(1)}/5\n`;
+    }
+
+    if (recentEntries.length > 0) {
+        context += `- Total journal entries: ${AppState.user.entries.length}\n`;
+        context += `- Recent topics discussed: ${recentEntries.map(e => e.content?.substring(0, 50) + '...').join('; ')}\n`;
+    }
+
+    return context;
+}
+
+function getFallbackResponse(userMessage) {
     const lowerMessage = userMessage.toLowerCase();
 
     // Pattern-based responses
@@ -249,6 +401,14 @@ function generateAIResponse(userMessage) {
 
     if (lowerMessage.includes('goal') || lowerMessage.includes('want to') || lowerMessage.includes('wish')) {
         return "Setting intentions is powerful! ✨ I've noted this as something important to you. What's one small step you could take toward this today?";
+    }
+
+    if (lowerMessage.includes('sad') || lowerMessage.includes('down') || lowerMessage.includes('depressed')) {
+        return "I'm sorry you're feeling this way. 💙 It takes courage to acknowledge these feelings. Would you like to talk about what's weighing on you? I'm here to listen, not judge.";
+    }
+
+    if (lowerMessage.includes('stress') || lowerMessage.includes('overwhelm')) {
+        return "Feeling overwhelmed is a sign you might be carrying too much right now. 🌱 What's one thing on your plate that feels most pressing? Sometimes we just need to start small.";
     }
 
     // Default responses
@@ -314,6 +474,9 @@ function initSettings() {
     const displayName = document.getElementById('displayName');
     const exportBtn = document.getElementById('exportData');
     const clearBtn = document.getElementById('clearData');
+    const apiKeyInput = document.getElementById('openRouterApiKey');
+    const modelSelect = document.getElementById('aiModelSelect');
+    const testBtn = document.getElementById('testAiConnection');
 
     if (displayName) {
         displayName.value = AppState.user.name || '';
@@ -321,6 +484,72 @@ function initSettings() {
             AppState.user.name = displayName.value;
             saveState();
             updateGreeting();
+        });
+    }
+
+    // API Key handling
+    if (apiKeyInput) {
+        apiKeyInput.value = AppState.user.settings.openRouterApiKey || '';
+        apiKeyInput.addEventListener('change', () => {
+            AppState.user.settings.openRouterApiKey = apiKeyInput.value.trim();
+            saveState();
+            showNotification('API key saved! 🔑', 'success');
+        });
+    }
+
+    // Model selection
+    if (modelSelect) {
+        modelSelect.value = AppState.user.settings.selectedModel || AI_CONFIG.defaultModel;
+        modelSelect.addEventListener('change', () => {
+            AppState.user.settings.selectedModel = modelSelect.value;
+            saveState();
+            showNotification('AI model updated! 🤖', 'success');
+        });
+    }
+
+    // Test AI connection
+    if (testBtn) {
+        testBtn.addEventListener('click', async () => {
+            const apiKey = AppState.user.settings.openRouterApiKey;
+            if (!apiKey) {
+                showNotification('Please enter an API key first', 'error');
+                return;
+            }
+
+            testBtn.disabled = true;
+            testBtn.textContent = '🔄 Testing...';
+
+            try {
+                const response = await fetch(AI_CONFIG.openRouterBaseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json',
+                        'HTTP-Referer': window.location.origin,
+                        'X-Title': 'LifeSync AI'
+                    },
+                    body: JSON.stringify({
+                        model: AppState.user.settings.selectedModel || AI_CONFIG.defaultModel,
+                        messages: [
+                            { role: 'user', content: 'Say "Connection successful!" in 5 words or less.' }
+                        ],
+                        max_tokens: 20
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showNotification('✅ AI connected successfully!', 'success');
+                } else {
+                    const error = await response.json();
+                    showNotification(`❌ Error: ${error.error?.message || 'Connection failed'}`, 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Network error: Check your connection', 'error');
+            }
+
+            testBtn.disabled = false;
+            testBtn.textContent = '🧪 Test Connection';
         });
     }
 
