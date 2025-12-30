@@ -51,15 +51,16 @@
                     <span>Get Early Access</span>
                 </div>
                 <div class="social-buttons">
-                    <button class="btn-social btn-google">
+                    <button class="btn-social btn-google" onclick="window.location.href='app/app.html'">
                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
                             width="20">
                         Continue with Google
                     </button>
-                    <button class="btn-social btn-apple">🍎 Continue with Apple</button>
+                    <button class="btn-social btn-apple" onclick="window.location.href='app/app.html'">🍎 Continue with
+                        Apple</button>
                 </div>
                 <div class="divider"><span>or</span></div>
-                <form class="email-form">
+                <form class="email-form" onsubmit="event.preventDefault(); window.location.href='app/app.html'">
                     <input type="email" placeholder="Enter your email" class="email-input">
                     <button type="submit" class="btn-primary">Get Started →</button>
                 </form>
