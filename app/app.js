@@ -1,9 +1,8 @@
-// LifeSync AI - App JavaScript with Built-in AI
+// LifeSync AI - App JavaScript with Secure AI Integration
 
-// AI Configuration (Built-in - no setup required!)
+// AI Configuration (API key stored securely on server)
 const AI_CONFIG = {
-    apiKey: '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',
-    baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
+    apiEndpoint: '/api/chat', // Serverless function handles API key securely
     model: 'google/gemini-2.0-flash-exp:free',
     systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
 
@@ -331,15 +330,13 @@ async function generateAIResponse(userMessage) {
             ...AppState.conversationHistory.slice(-10) // Keep last 10 messages for context
         ];
 
-        console.log('Calling OpenRouter API...'); // Debug log
+        console.log('Calling secure AI API...'); // Debug log
 
-        const response = await fetch(AI_CONFIG.baseUrl, {
+        // Call our serverless function (API key is stored securely on server)
+        const response = await fetch(AI_CONFIG.apiEndpoint, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${AI_CONFIG.apiKey}`,
-                'Content-Type': 'application/json',
-                'HTTP-Referer': window.location.origin || 'https://lifesync-ai.vercel.app',
-                'X-Title': 'LifeSync AI'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 model: AI_CONFIG.model,
@@ -376,10 +373,10 @@ async function generateAIResponse(userMessage) {
         removeTypingIndicator();
 
         // Show error to user for debugging
-        if (error.message.includes('401')) {
-            addMessage("⚠️ API key issue. Please check the console for details. Using fallback response.", 'ai');
+        if (error.message.includes('401') || error.message.includes('API key')) {
+            addMessage("⚠️ AI service configuration issue. Using smart fallback.", 'ai');
         } else if (error.message.includes('429')) {
-            addMessage("⚠️ Rate limit reached. Please wait a moment and try again.", 'ai');
+            addMessage("⚠️ AI is busy. Please wait a moment and try again.", 'ai');
         } else {
             // Use local fallback if API fails
             const response = getFallbackResponse(userMessage);
