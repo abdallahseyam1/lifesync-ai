@@ -647,30 +647,247 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+
+    /* Mobile Sidebar - Hidden by default */
     .sidebar {
+        position: fixed;
         transform: translateX(-100%);
-        transition: transform 0.3s;
+        transition: transform 0.3s ease;
+        width: 280px;
+        z-index: 1000;
     }
 
     .sidebar.open {
         transform: translateX(0);
     }
 
+    /* Mobile Main Content */
     .main-content {
         margin-left: 0;
+        padding: 16px;
+        padding-top: 70px;
     }
 
+    /* Mobile Header with Menu Button */
+    .mobile-header {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border);
+        align-items: center;
+        padding: 0 16px;
+        z-index: 999;
+        gap: 12px;
+    }
+
+    .menu-btn {
+        width: 44px;
+        height: 44px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+    }
+
+    /* Overlay */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Dashboard Grid */
     .dashboard-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .insight-card {
         grid-column: span 1;
     }
 
+    /* Page Header */
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Cards */
+    .card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    /* Mood Selector - Bigger touch targets */
+    .mood-selector {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .mood-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
+    }
+
+    /* Chat */
+    .chat-container {
+        height: calc(100vh - 130px);
+    }
+
+    .chat-messages {
+        padding: 16px;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .chat-input-container {
+        padding: 12px 16px 20px;
+    }
+
+    .chat-input-wrapper {
+        padding: 10px 12px;
+    }
+
+    #chatInput {
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+    }
+
+    .send-btn {
+        width: 44px;
+        height: 44px;
+    }
+
     .chat-hints {
         flex-direction: column;
+        gap: 6px;
+    }
+
+    .hint {
+        font-size: 0.8rem;
+    }
+
+    /* Settings */
+    .settings-grid {
+        gap: 16px;
+    }
+
+    .setting-input,
+    .setting-select {
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+        padding: 14px;
+    }
+
+    /* Buttons */
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 14px 20px;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+
+    .data-buttons {
+        flex-direction: column;
+    }
+
+    .data-buttons button {
+        min-width: 100%;
+    }
+
+    /* Mini Stats */
+    .mini-stats {
         gap: 8px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    /* Grids */
+    .insights-grid,
+    .memories-grid,
+    .decisions-grid,
+    .growth-dashboard {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Score Circle */
+    .score-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .score-circle span {
+        font-size: 2rem;
+    }
+
+    /* Search */
+    .search-input {
+        font-size: 16px;
+        padding: 14px 16px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    .main-content {
+        padding: 12px;
+        padding-top: 70px;
+    }
+
+    .mood-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 1.3rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .message-content {
+        padding: 12px;
+        font-size: 0.9rem;
     }
 }
 

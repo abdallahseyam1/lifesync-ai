@@ -2,7 +2,7 @@
 
 // AI Configuration (Built-in - no setup required!)
 const AI_CONFIG = {
-    apiKey: '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',
+    apiKey: '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',
     baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
     model: 'google/gemini-2.0-flash-exp:free',
     systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadState();
     initNavigation();
     initTheme();
+    initMobileMenu();
     initMoodSelector();
     initChat();
     initQuickCapture();
@@ -98,6 +99,49 @@ function navigateTo(pageName) {
     });
 
     AppState.currentPage = pageName;
+
+    // Close mobile menu after navigation
+    closeMobileMenu();
+}
+
+// Mobile Menu
+function initMobileMenu() {
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const mobileHeader = document.getElementById('mobileHeader');
+
+    // Check if mobile
+    function checkMobile() {
+        if (window.innerWidth <= 768) {
+            mobileHeader.style.display = 'flex';
+        } else {
+            mobileHeader.style.display = 'none';
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    }
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', closeMobileMenu);
+    }
+}
+
+function closeMobileMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
 }
 
 // Theme
