@@ -1,4 +1,4 @@
-// LifeSync AI - App JavaScript with Secure AI Integration
+// LifeSync AI - App JavaScript with Secure AI Integration v2
 
 // AI Configuration (API key stored securely on server)
 const AI_CONFIG = {
