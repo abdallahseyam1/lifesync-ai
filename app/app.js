@@ -3,7 +3,7 @@
 // AI Configuration (API key stored securely on server)
 const AI_CONFIG = {
     apiEndpoint: '/api/chat', // Serverless function handles API key securely
-    model: 'google/gemini-2.0-flash-exp:free',
+    model: 'meta-llama/llama-3.2-3b-instruct:free', // Free model with better rate limits
     systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
 
 1. Listen deeply and validate feelings without judgment
