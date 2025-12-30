@@ -64,6 +64,18 @@
     color: var(--text);
 }
 
+/* Fix Google button visibility in dark mode */
+[data-theme="dark"] .btn-google {
+    background: #FFFFFF;
+    color: #1F2937;
+    border-color: #E5E7EB;
+}
+
+[data-theme="dark"] .btn-google:hover {
+    background: #F3F4F6;
+    border-color: #D1D5DB;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -334,6 +346,7 @@ body {
     border: 1px solid var(--border);
     border-radius: 12px;
     background: var(--bg-card);
+    color: var(--text);
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
@@ -344,6 +357,18 @@ body {
     background: var(--bg);
     border-color: rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
+}
+
+/* Google button - always white with dark text for visibility */
+.btn-google {
+    background: #FFFFFF;
+    color: #1F2937;
+    border-color: #E5E7EB;
+}
+
+.btn-google:hover {
+    background: #F9FAFB;
+    border-color: #D1D5DB;
 }
 
 .btn-apple {
