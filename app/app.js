@@ -331,12 +331,14 @@ async function generateAIResponse(userMessage) {
             ...AppState.conversationHistory.slice(-10) // Keep last 10 messages for context
         ];
 
+        console.log('Calling OpenRouter API...'); // Debug log
+
         const response = await fetch(AI_CONFIG.baseUrl, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${AI_CONFIG.apiKey}`,
                 'Content-Type': 'application/json',
-                'HTTP-Referer': window.location.origin,
+                'HTTP-Referer': window.location.origin || 'https://lifesync-ai.vercel.app',
                 'X-Title': 'LifeSync AI'
             },
             body: JSON.stringify({
@@ -349,12 +351,22 @@ async function generateAIResponse(userMessage) {
 
         removeTypingIndicator();
 
+        console.log('API Response status:', response.status); // Debug log
+
         if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+            const errorBody = await response.text();
+            console.error('API Error Body:', errorBody);
+            throw new Error(`API error: ${response.status} - ${errorBody}`);
         }
 
         const data = await response.json();
-        const aiMessage = data.choices[0]?.message?.content || getFallbackResponse(userMessage);
+        console.log('API Response data:', data); // Debug log
+
+        const aiMessage = data.choices?.[0]?.message?.content;
+
+        if (!aiMessage) {
+            throw new Error('No response content from AI');
+        }
 
         addMessage(aiMessage, 'ai');
         AppState.conversationHistory.push({ role: 'assistant', content: aiMessage });
@@ -363,10 +375,17 @@ async function generateAIResponse(userMessage) {
         console.error('AI Error:', error);
         removeTypingIndicator();
 
-        // Use local fallback if API fails
-        const response = getFallbackResponse(userMessage);
-        addMessage(response, 'ai');
-        AppState.conversationHistory.push({ role: 'assistant', content: response });
+        // Show error to user for debugging
+        if (error.message.includes('401')) {
+            addMessage("⚠️ API key issue. Please check the console for details. Using fallback response.", 'ai');
+        } else if (error.message.includes('429')) {
+            addMessage("⚠️ Rate limit reached. Please wait a moment and try again.", 'ai');
+        } else {
+            // Use local fallback if API fails
+            const response = getFallbackResponse(userMessage);
+            addMessage(response, 'ai');
+            AppState.conversationHistory.push({ role: 'assistant', content: response });
+        }
     }
 
     AppState.isAiTyping = false;
