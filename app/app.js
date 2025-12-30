@@ -2,7 +2,7 @@
 
 // AI Configuration (Built-in - no setup required!)
 const AI_CONFIG = {
-    apiKey: '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',
+    apiKey: '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',
     baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
     model: 'google/gemini-2.0-flash-exp:free',
     systemPrompt: `You are LifeSync, a warm, empathetic AI companion focused on personal growth and self-understanding. Your role is to:
